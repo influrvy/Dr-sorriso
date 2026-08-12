@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 
 const LEADS_API = "https://influrbusiness.com.br/api/public/leads";
 const APPOINTMENTS_API = "https://influrbusiness.com.br/api/public/appointments";
@@ -58,6 +58,21 @@ export default function Home() {
     return `${CHECKOUT_URL}?${query}`;
   }, []);
 
+  useEffect(() => {
+    const cursor = document.querySelector<HTMLElement>(".signature-cursor");
+    if (!cursor || window.matchMedia("(pointer: coarse)").matches) return;
+    const move = (event: MouseEvent) => {
+      cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
+      cursor.classList.add("is-visible");
+    };
+    const press = () => cursor.classList.add("is-pressed");
+    const release = () => cursor.classList.remove("is-pressed");
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerdown", press);
+    window.addEventListener("pointerup", release);
+    return () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerdown", press); window.removeEventListener("pointerup", release); };
+  }, []);
+
   async function submitLead(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setLeadState("loading");
@@ -84,6 +99,7 @@ export default function Home() {
 
   return (
     <>
+      <div className="signature-cursor" aria-hidden="true"><i /></div>
       <header className="site-header">
         <a className="brand" href="#inicio" aria-label="Dr. Sorriso — início">
           <span className="brand-mark">DS</span>
@@ -160,7 +176,7 @@ export default function Home() {
 
         <section className="section location" id="localizacao">
           <div className="location-card"><p className="eyebrow">Onde estamos</p><h2>Venha conhecer a Dr. Sorriso.</h2><address>Av. Princesa Isabel, 3873<br />Santa Tereza · Boa Vista, RR</address><div className="hours"><span>Segunda a sexta<small>Consulte horários</small></span><span>Agendamentos<small>(95) 99150-5132</small></span></div><a className="button" href="https://maps.app.goo.gl/YvbXhs6HurVusD9S8" target="_blank" rel="noreferrer">Traçar rota no Maps ↗</a></div>
-          <div className="map-frame"><iframe src="https://www.google.com/maps/embed?pb=!4v1786560065362!6m8!1m7!1s81zbaYsTDZ3ww39Dn_8GFA!2m2!1d2.83089373480938!2d-60.73064131405891!3f154.23880258130066!4f-1.2061270849748382!5f1.925732226890613" title="Street View da clínica Dr. Sorriso" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" /></div>
+          <div className="map-frame"><div className="map-label"><span>Street view</span><b>Conheça a nossa entrada</b><small>Av. Princesa Isabel, 3873</small></div><div className="map-orbit map-orbit-one" /><div className="map-orbit map-orbit-two" /><iframe src="https://www.google.com/maps/embed?pb=!4v1786560065362!6m8!1m7!1s81zbaYsTDZ3ww39Dn_8GFA!2m2!1d2.83089373480938!2d-60.73064131405891!3f154.23880258130066!4f-1.2061270849748382!5f1.925732226890613" title="Street View da clínica Dr. Sorriso" allowFullScreen loading="lazy" referrerPolicy="strict-origin-when-cross-origin" /></div>
         </section>
 
         <section className="section lead-section">
