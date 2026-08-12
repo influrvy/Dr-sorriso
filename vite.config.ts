@@ -42,6 +42,15 @@ export default defineConfig(async () => {
 
   // Wrangler snapshots its log path while the Cloudflare plugin is imported.
   const { cloudflare } = await import("@cloudflare/vite-plugin");
+  const isVercel = Boolean(process.env.VERCEL);
+
+  if (isVercel) {
+    const { nitro } = await import("nitro/vite");
+
+    return {
+      plugins: [vinext(), nitro()],
+    };
+  }
 
   return {
     server: isCodexSeatbeltSandbox
