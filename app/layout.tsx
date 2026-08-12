@@ -5,7 +5,10 @@ import "./globals.css";
 const display = Cormorant_Garamond({ variable: "--font-display", subsets: ["latin"], weight: ["500", "600", "700"], style: ["normal", "italic"] });
 const sans = Manrope({ variable: "--font-sans", subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
-const publicUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const publicUrl = configuredSiteUrl?.startsWith("http")
+  ? configuredSiteUrl
+  : "https://dr-sorriso.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(publicUrl),
