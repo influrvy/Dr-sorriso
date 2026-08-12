@@ -122,7 +122,7 @@ export default function Home() {
             <div className="hero-proof"><span><b>EPAO 0246</b>Clínica regularizada</span><span><b>CRO-RR 01400</b>Responsável técnico</span></div>
           </div>
           <div className="hero-visual">
-            <img src="/clinic/1539549927c76f4e.jpg" alt="Atendimento odontológico na clínica Dr. Sorriso" />
+            <img src="/clinic/hero-dr-sorriso-remastered.png" alt="Atendimento odontológico na clínica Dr. Sorriso" />
             <div className="hero-badge"><span>✦</span><b>Atendimento humano</b><small>do diagnóstico ao pós-tratamento</small></div>
           </div>
         </section>
