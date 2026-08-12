@@ -103,6 +103,7 @@ export default function Home() {
       <header className="site-header">
         <a className="brand" href="#inicio" aria-label="Dr. Sorriso — início">
           <img className="brand-logo" src="/brand/dr-sorriso-logo-4k.png" alt="Dr. Sorriso — Odontologia Estética" />
+          <span className="brand-copy"><strong>DR. SORRISO</strong><small>ODONTOLOGIA ESTÉTICA</small></span>
         </a>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Abrir menu">{menuOpen ? "×" : "☰"}</button>
         <nav className={menuOpen ? "nav open" : "nav"} onClick={() => setMenuOpen(false)}>
