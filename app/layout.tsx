@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(publicUrl),
   title: "Dr. Sorriso | Odontologia e Estética em Santa Tereza",
   description: "Clínica odontológica completa em Santa Tereza, Boa Vista. Agende sua avaliação na Dr. Sorriso.",
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  icons: { icon: "/brand/dr-sorriso-favicon.png", shortcut: "/brand/dr-sorriso-favicon.png", apple: "/brand/dr-sorriso-favicon.png" },
   openGraph: { title: "Dr. Sorriso — Cuidado de verdade para o seu sorriso", description: "Odontologia completa e estética em Santa Tereza, Boa Vista.", type: "website", locale: "pt_BR", images: [{ url: "/og.png", width: 1792, height: 896, alt: "Dr. Sorriso — Cuidado de verdade para o seu sorriso" }] },
   twitter: { card: "summary_large_image", title: "Dr. Sorriso", description: "Cuidado de verdade para o seu sorriso.", images: ["/og.png"] },
 };

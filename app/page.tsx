@@ -102,8 +102,7 @@ export default function Home() {
       <div className="signature-cursor" aria-hidden="true"><i /></div>
       <header className="site-header">
         <a className="brand" href="#inicio" aria-label="Dr. Sorriso — início">
-          <span className="brand-mark">DS</span>
-          <span><strong>DR. SORRISO</strong><small>ODONTOLOGIA ESTÉTICA</small></span>
+          <img className="brand-logo" src="/brand/dr-sorriso-logo-4k.png" alt="Dr. Sorriso — Odontologia Estética" />
         </a>
         <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Abrir menu">{menuOpen ? "×" : "☰"}</button>
         <nav className={menuOpen ? "nav open" : "nav"} onClick={() => setMenuOpen(false)}>
@@ -185,7 +184,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer><div className="footer-brand"><span className="brand-mark">DS</span><div><b>DR. SORRISO</b><small>Odontologia Estética</small></div></div><div><b>Atendimento</b><a href="#agendamento">Agendamento online</a><a href="https://api.whatsapp.com/send/?phone=5595991505132">WhatsApp</a></div><div><b>Visite</b><a href="https://maps.app.goo.gl/YvbXhs6HurVusD9S8">Av. Princesa Isabel, 3873<br />Santa Tereza · Boa Vista, RR</a></div><div><b>Acompanhe</b><a href="https://www.instagram.com/drsorrisorr.santatereza/">Instagram ↗</a></div><div className="footer-bottom"><span>© 2026 Dr. Sorriso · EPAO 0246 · Resp. Téc. Ítalo Luís, CRO-RR 01400</span><a className="site-sale" href={checkoutHref} target="_blank" rel="noreferrer">Quero este site ↗</a></div></footer>
+      <footer><div className="footer-brand"><img className="brand-logo" src="/brand/dr-sorriso-logo-4k.png" alt="Dr. Sorriso — Odontologia Estética" /></div><div><b>Atendimento</b><a href="#agendamento">Agendamento online</a><a href="https://api.whatsapp.com/send/?phone=5595991505132">WhatsApp</a></div><div><b>Visite</b><a href="https://maps.app.goo.gl/YvbXhs6HurVusD9S8">Av. Princesa Isabel, 3873<br />Santa Tereza · Boa Vista, RR</a></div><div><b>Acompanhe</b><a href="https://www.instagram.com/drsorrisorr.santatereza/">Instagram ↗</a></div><div className="footer-bottom"><span>© 2026 Dr. Sorriso · EPAO 0246 · Resp. Téc. Ítalo Luís, CRO-RR 01400</span><a className="site-sale" href={checkoutHref} target="_blank" rel="noreferrer">Quero este site ↗</a></div></footer>
       <a className="buy-site-float" href={checkoutHref} target="_blank" rel="noreferrer">Quero este site <span>↗</span></a>
       <a className="whatsapp-float" href="https://api.whatsapp.com/send/?phone=5595991505132" target="_blank" rel="noreferrer" aria-label="Falar com a Dr. Sorriso no WhatsApp"><img src="https://cdn.simpleicons.org/whatsapp/F7F6F1" alt="" /></a>
     </>
