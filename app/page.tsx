@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 
 const LEADS_API = "https://influrbusiness.com.br/api/public/leads";
 const APPOINTMENTS_API = "https://influrbusiness.com.br/api/public/appointments";
@@ -51,6 +51,8 @@ export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [leadState, setLeadState] = useState<SubmitState>("idle");
   const [appointmentState, setAppointmentState] = useState<SubmitState>("idle");
+  const [soundEnabled, setSoundEnabled] = useState(false);
+  const audioContext = useRef<AudioContext | null>(null);
   const checkoutHref = useMemo(() => {
     const query = new URLSearchParams({ origem: "dr-sorriso-santa-tereza" });
     if (SITE_KEY) query.set("site_key", SITE_KEY);
@@ -60,18 +62,63 @@ export default function Home() {
 
   useEffect(() => {
     const cursor = document.querySelector<HTMLElement>(".signature-cursor");
-    if (!cursor || window.matchMedia("(pointer: coarse)").matches) return;
+    if (!cursor || !window.matchMedia("(pointer: fine) and (hover: hover)").matches) return;
     const move = (event: MouseEvent) => {
       cursor.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0)`;
       cursor.classList.add("is-visible");
     };
+    const hover = (event: PointerEvent) => {
+      const element = (event.target as Element | null)?.closest("a, button, input, select, textarea");
+      cursor.classList.toggle("is-link", Boolean(element?.matches("a, button")));
+      cursor.classList.toggle("is-field", Boolean(element?.matches("input, select, textarea")));
+    };
     const press = () => cursor.classList.add("is-pressed");
     const release = () => cursor.classList.remove("is-pressed");
     window.addEventListener("pointermove", move);
+    window.addEventListener("pointerover", hover);
     window.addEventListener("pointerdown", press);
     window.addEventListener("pointerup", release);
-    return () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerdown", press); window.removeEventListener("pointerup", release); };
+    return () => { window.removeEventListener("pointermove", move); window.removeEventListener("pointerover", hover); window.removeEventListener("pointerdown", press); window.removeEventListener("pointerup", release); };
   }, []);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches || !("IntersectionObserver" in window)) return;
+    document.documentElement.classList.add("motion-ready");
+    const elements = document.querySelectorAll<HTMLElement>(".section, .promise-strip, .hero-visual, footer");
+    const observer = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-in-view");
+        observer.unobserve(entry.target);
+      }
+    }), { threshold: 0.1, rootMargin: "0px 0px -6%" });
+    elements.forEach((element) => observer.observe(element));
+    return () => { observer.disconnect(); document.documentElement.classList.remove("motion-ready"); };
+  }, []);
+
+  useEffect(() => {
+    if (!soundEnabled) return;
+    const playClick = (event: MouseEvent) => {
+      const target = event.target as Element | null;
+      if (!target?.closest(".button, .buy-site-float, .whatsapp-float")) return;
+      const Context = window.AudioContext;
+      if (!Context) return;
+      const context = audioContext.current ?? new Context();
+      audioContext.current = context;
+      const oscillator = context.createOscillator();
+      const gain = context.createGain();
+      oscillator.type = "sine";
+      oscillator.frequency.setValueAtTime(620, context.currentTime);
+      oscillator.frequency.exponentialRampToValueAtTime(820, context.currentTime + 0.06);
+      gain.gain.setValueAtTime(0.0001, context.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.035, context.currentTime + 0.01);
+      gain.gain.exponentialRampToValueAtTime(0.0001, context.currentTime + 0.11);
+      oscillator.connect(gain).connect(context.destination);
+      oscillator.start();
+      oscillator.stop(context.currentTime + 0.12);
+    };
+    window.addEventListener("click", playClick);
+    return () => window.removeEventListener("click", playClick);
+  }, [soundEnabled]);
 
   async function submitLead(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -100,6 +147,7 @@ export default function Home() {
   return (
     <>
       <div className="signature-cursor" aria-hidden="true"><i /></div>
+      <button className={soundEnabled ? "sound-toggle is-on" : "sound-toggle"} type="button" aria-pressed={soundEnabled} aria-label={soundEnabled ? "Desativar sons de interação" : "Ativar sons de interação"} onClick={() => setSoundEnabled((current) => !current)}><span aria-hidden="true">♪</span><small>{soundEnabled ? "Som ligado" : "Som"}</small></button>
       <header className="site-header">
         <a className="brand" href="#inicio" aria-label="Dr. Sorriso — início">
           <img className="brand-logo" src="/brand/dr-sorriso-logo-4k.png" alt="Dr. Sorriso — Odontologia Estética" />
